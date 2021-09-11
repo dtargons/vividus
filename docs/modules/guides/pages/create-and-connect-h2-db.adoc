@@ -1,0 +1,41 @@
+= How to use H2 database in an embedded mode (in memory)
+
+Assuming there is a project containing VIVIDUS-based tests
+(e.g. https://github.com/vividus-framework/vividus-starter[VIVIDUS Starter])
+and the goal is to create https://h2database.com/html/features.html#feature_list[H2 database]
+with test data via SQL files. Database is deployed on the runtime and is accessible from tests.
+
+. Add the required dependencies (DB plugin, H2 database) to the project `build.gradle`
++
+[source,gradle,subs="attributes+"]
+----
+implementation(group: 'org.vividus', name: 'vividus-plugin-db', version: '{current-version}')
+implementation(group: 'com.h2database', name: 'h2', version: '1.4.200')
+----
+
+. Configure connection to the H2 database
++
+[source,properties]
+----
+db.connection.testh2db.driver-class-name=org.h2.Driver
+db.connection.testh2db.url=jdbc:h2:mem:test;\
+  INIT=create schema if not exists test\\;\
+  SET SCHEMA test\\;\
+  RUNSCRIPT FROM 'classpath:/path/to/sql/file1.sql'\\;\
+  RUNSCRIPT FROM 'classpath:/path/to/sql/file2.sql'
+db.connection.testh2db.username=
+db.connection.testh2db.password=
+----
++
+More info about executing SQL statements when connecting
+https://h2database.com/html/features.html#execute_sql_on_connection[could be found here]
+
+. Use the configured connection to execute SQL
++
+.Execute SQL against H2 database
+[source,gherkin]
+----
+When I execute SQL query `
+SELECT * FROM table
+` against `testh2db` and save result to scenario variable `h2-records`
+----
