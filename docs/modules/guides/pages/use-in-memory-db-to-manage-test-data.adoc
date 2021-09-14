@@ -1,9 +1,11 @@
-= How to use H2 database in an embedded mode (in memory)
+= How to use in-memory database to manage test data
 
 Assuming there is a project containing VIVIDUS-based tests
 (e.g. https://github.com/vividus-framework/vividus-starter[VIVIDUS Starter])
-and the goal is to create https://h2database.com/html/features.html#feature_list[H2 database]
-with test data via SQL files. Database is deployed on the runtime and is accessible from tests.
+and the goal is to manage test data in the in-memory database (e.g.
+https://h2database.com/html/features.html#feature_list[H2 database]).
+The database is deployed on tests start, accessible from tests and shutdown on
+tests end. The test data can be created from SQL files located in the project.
 
 . Add the required dependencies (DB plugin, H2 database) to the project `build.gradle`
 +
@@ -27,8 +29,8 @@ db.connection.testh2db.username=
 db.connection.testh2db.password=
 ----
 +
-More info about executing SQL statements when connecting
-https://h2database.com/html/features.html#execute_sql_on_connection[could be found here]
+The details on executing SQL statements on connection
+https://h2database.com/html/features.html#execute_sql_on_connection[could be found in the official H2 guide].
 
 . Use the configured connection to execute SQL
 +
